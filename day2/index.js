@@ -22,8 +22,19 @@ function checkSafe(inAry) {
   return true;
 }
 
+function checkLine(inAry) {
+  if (checkSafe(inAry)) return true;
+
+  for (let i = 0; i < inAry.length; i++) {
+    const safe = checkSafe([...inAry.slice(0, i), ...inAry.slice(i + 1)]);
+    if (safe) return true;
+  }
+
+  return false;
+}
+
 for await (const line of input.readLines()) {
-  if (checkSafe(line.split(/\s+/).map((x) => +x))) safe++;
+  if (checkLine(line.split(/\s+/).map((x) => +x))) safe++;
 }
 
 console.log(safe);
