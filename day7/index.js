@@ -16,8 +16,14 @@ function buildBridge(target, buildingBlocks) {
   const [block1, block2, ...blocks] = buildingBlocks;
   const bb1 = [block1 + block2, ...blocks];
   const bb2 = [block1 * block2, ...blocks];
+  const bb3i1 = +`${block1}${block2}`;
+  const bb3 = [bb3i1, ...blocks];
 
-  return buildBridge(target, bb1) || buildBridge(target, bb2);
+  return (
+    buildBridge(target, bb1) ||
+    buildBridge(target, bb2) ||
+    buildBridge(target, bb3)
+  );
 }
 
 function checkLine(line) {
