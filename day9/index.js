@@ -75,7 +75,7 @@ function findFree(length, fromIndex) {
     if (i < length) continue;
     if (
       free[i].length > 0 &&
-      (foundLength === undefined || free[i][0] < foundLength)
+      (foundLength === undefined || free[i][0] < free[foundLength][0])
     ) {
       foundLength = i;
     }
@@ -106,12 +106,15 @@ function move(fromIndex, toIndex, length) {
 }
 
 let prevId = ".";
+let lowestMoved;
 for (let i = disk2.length - 1; i >= 0; i--) {
-  if (disk2[i] === prevId || disk2[i] === ".") continue;
+  if (disk2[i] === prevId || disk2[i] === "." || disk[i] > lowestMoved)
+    continue;
 
   const length = findLength(i);
   const found = findFree(length, i);
   if (found !== undefined) {
+    lowestMoved = disk2[i];
     move(i, found, length);
   }
 
