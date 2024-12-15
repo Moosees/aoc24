@@ -1,11 +1,5 @@
 import { open } from "node:fs/promises";
 
-console.log("Part one");
-console.time("Time");
-const input = await open("./input.txt");
-const dimensions = { x: 101, y: 103 };
-const quads = [0, 0, 0, 0];
-
 function findPosAtSecond(line, s) {
   const [start, velocity] = line.split(" ");
   const [startX, startY] = start.split("=")[1].split(",");
@@ -18,6 +12,12 @@ function findPosAtSecond(line, s) {
 
   return { finalX, finalY };
 }
+
+console.log("Part one");
+console.time("Time");
+const dimensions = { x: 101, y: 103 };
+const quads = [0, 0, 0, 0];
+const input = await open("./input.txt");
 
 for await (const line of input.readLines()) {
   const { finalX, finalY } = findPosAtSecond(line, 100);
@@ -37,6 +37,8 @@ for await (const line of input.readLines()) {
   else if (!isLeft && !isTop) quads[3]++;
 }
 
+await input?.close();
+
 const part1 = quads.reduce((sum, val) => sum * val);
 console.timeEnd("Time");
 console.log("Answer: ", part1);
@@ -54,6 +56,8 @@ async function paintMapAtSecond(s) {
     const { finalX, finalY } = findPosAtSecond(line, s);
     map[finalY][finalX]++;
   }
+
+  await input?.close();
 
   map.forEach((line) => console.log(line.join("").replace(/0/g, " ")));
 }
@@ -76,6 +80,8 @@ async function lookForTrees() {
   for await (const line of p2input.readLines()) {
     lines.push(line);
   }
+
+  await p2input?.close();
 
   let minVarianceFound;
   for (let i = 0; i < 9999; i++) {
